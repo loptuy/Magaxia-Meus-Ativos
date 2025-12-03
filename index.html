@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Meus Ativos</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  color:#000;
+  background: radial-gradient(circle at top, #4da3ff, #003bff 60%, #001a66);
+  backdrop-filter: blur(4px);
+}
+
+/* brilho suave no fundo */
+body::before{
+  content:"";
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.35), transparent 60%),
+              radial-gradient(circle at 80% 70%, rgba(255,255,255,0.20), transparent 70%);
+  pointer-events:none;
+  filter:blur(40px);
+}
+
+/* Cabeçalho */
+.header{
+  background:rgba(255,255,255,0.35);
+  padding:36px 18px;
+  text-align:center;
+  border-bottom-left-radius:20px;
+  border-bottom-right-radius:20px;
+  box-shadow:0 6px 20px rgba(0,0,0,.3);
+  backdrop-filter:blur(8px);
+  color:#000;
+}
+
+.container{
+  padding:18px;
+}
+
+.card{
+  background:rgba(255,255,255,0.35);
+  padding:16px;
+  border-radius:12px;
+  box-shadow:0 3px 12px rgba(0,0,0,.25);
+  margin-bottom:12px;
+  backdrop-filter:blur(10px);
+  color:#000;
+}
+
+.item{
+  background:rgba(255,255,255,0.45);
+  padding:12px;
+  border-radius:8px;
+  margin-bottom:10px;
+  font-size:16px;
+  color:#000;
+  backdrop-filter:blur(6px);
+  font-weight:bold;
+}
+
+/* === BRILHO ANIMADO NAS LETRAS === */
+.glow-text {
+  position: relative;
+  display: inline-block;
+  background: linear-gradient(
+      90deg,
+      #000 0%,
+      #000 30%,
+      #ffffff 50%,
+      #000 70%,
+      #000 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shineText 2.2s linear infinite;
+  background-size: 200%;
+  font-weight: bold;
+}
+
+@keyframes shineText {
+  0% { background-position: 200%; }
+  100% { background-position: -200%; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h2 class="glow-text">Meus Ativos</h2>
+</div>
+
+<div class="container">
+
+  <!-- QUANTIDADE DE ATIVOS -->
+  <div class="card">
+    <h3 id="ativosTotal" class="glow-text" style="margin:0">0</h3>
+    <div style="color:#000">TOTAL DE ATIVOS</div>
+  </div>
+
+  <!-- LISTA -->
+  <div class="card">
+    <h3 class="glow-text">Lista de Ativos</h3>
+    <div id="listaAtivos"></div>
+  </div>
+
+</div>
+
+<script>
+  // Verificar login
+  const logged = localStorage.getItem('vast_logged');
+  const userData = JSON.parse(localStorage.getItem('vast_userdata') || 'null');
+
+  if(logged !== '1' || !userData){
+    window.location.href = 'login.html?next=ativos';
+  }
+
+  // Lista inicial vazia (pode integrar com Firebase depois)
+  const ativosExemplo = [];
+
+  const lista = document.getElementById('listaAtivos');
+  const total = document.getElementById('ativosTotal');
+
+  // Atualizar total
+  total.textContent = ativosExemplo.length;
+
+  // Preencher lista
+  ativosExemplo.forEach(a=>{
+    const el = document.createElement('div');
+    el.className = 'item';
+    el.innerHTML = `
+      <strong>${a.nome}</strong><br>
+      <span style="color:#000;font-size:14px">${a.valor}</span>`;
+    lista.appendChild(el);
+  });
+</script>
+
+</body>
+</html>
